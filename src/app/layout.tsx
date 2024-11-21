@@ -30,7 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex`}
       >
         <Snb />
-        <div className="p-10 ml-[200px]">{children}</div>
+        <div className="ml-[200px]">{children}</div>
       </body>
     </html>
   );

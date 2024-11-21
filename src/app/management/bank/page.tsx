@@ -109,7 +109,7 @@ export default function Page() {
   };
 
   return (
-    <div>
+    <div className="min-w-[1200px] p-10">
       <button
         onClick={downloadExcel}
         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-10"
@@ -118,7 +118,7 @@ export default function Page() {
         다운로드
       </button>
       <div className="grid grid-cols-6 text-center items-center text-xl border-b p-3 border-t border-r border-l border-red-500">
-        <div className="border-r border-red-500">
+        <div className="border-r border-red-500 ">
           <input
             type="checkbox"
             className="w-8 h-8 "
@@ -126,10 +126,18 @@ export default function Page() {
             checked={selectedItems.length === BANK_LIST.length}
           />
         </div>
-        <div className="border-r border-red-500 w-[200px]">입금기관</div>
-        <div className="border-r border-red-500">입금계좌번호</div>
-        <div className="border-r border-red-500">이체금액(원)</div>
-        <div className="border-r border-red-500">입금계좌메모</div>
+        <div className="border-r border-red-500 w-[200px] m-w-[200px]">
+          입금기관
+        </div>
+        <div className="border-r border-red-500 w-[200px] m-w-[200px]">
+          입금계좌번호
+        </div>
+        <div className="border-r border-red-500 w-[200px] m-w-[200px]">
+          이체금액(원)
+        </div>
+        <div className="border-r border-red-500 w-[200px] m-w-[200px]">
+          입금계좌메모
+        </div>
         <div className="">출금계좌메모</div>
       </div>
 
@@ -138,7 +146,7 @@ export default function Page() {
           key={item.userKey}
           className="text-center grid grid-cols-6 items-center w-full border-b border-r border-l p-3 border-red-500"
         >
-          <div className="border-r border-red-500">
+          <div className="border-r border-red-500 w-[200px] m-w-[200px]">
             <input
               type="checkbox"
               className="w-8 h-8 "
@@ -146,10 +154,18 @@ export default function Page() {
               onChange={(e) => handleItemCheck(item.userKey, e.target.checked)}
             />
           </div>
-          <div className="border-r border-red-500 ">{item.bankName}</div>
-          <div className="border-r border-red-500">{item.accountNumber}</div>
-          <div className="border-r border-red-500">{item.money}</div>
-          <div className="border-r border-red-500">{item.depositAccount}</div>
+          <div className="border-r border-red-500 w-[200px] m-w-[200px] ">
+            {item.bankName}
+          </div>
+          <div className="border-r border-red-500 w-[200px] m-w-[200px]">
+            {item.accountNumber}
+          </div>
+          <div className="border-r border-red-500 w-[200px] m-w-[200px]">
+            {item.money}
+          </div>
+          <div className="border-r border-red-500 w-[200px] m-w-[200px]">
+            {item.depositAccount}
+          </div>
           <div className="">{item.withdrawalAccount}</div>
         </div>
       ))}
