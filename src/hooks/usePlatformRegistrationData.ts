@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 export function usePlatformRegistrationData() {
   const [data, setData] = useState<PlatformRegistrationData>({
@@ -38,7 +38,55 @@ export function usePlatformRegistrationData() {
     }));
   };
 
-  return { data, setData, updateButton };
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+
+    if (id in data) {
+      setData((prevData) => ({
+        ...prevData,
+        [id]: value,
+      }));
+    }
+  };
+
+  const handleTimeCheckInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+
+    setData((prevData) => {
+      let updatedStartTime = prevData.startTime;
+      let updatedEndTime = prevData.endTime;
+
+      if (id === "startHour" || id === "startMin") {
+        const [hour, min] = updatedStartTime.split(":");
+        updatedStartTime =
+          id === "startHour"
+            ? `${value.padStart(2, "0")}:${min}`
+            : `${hour}:${value.padStart(2, "0")}`;
+      }
+
+      if (id === "endHour" || id === "endMin") {
+        const [hour, min] = updatedEndTime.split(":");
+        updatedEndTime =
+          id === "endHour"
+            ? `${value.padStart(2, "0")}:${min}`
+            : `${hour}:${value.padStart(2, "0")}`;
+      }
+
+      return {
+        ...prevData,
+        startTime: updatedStartTime,
+        endTime: updatedEndTime,
+      };
+    });
+  };
+
+  return {
+    data,
+    setData,
+    updateButton,
+    handleInputChange,
+    handleTimeCheckInputChange,
+  };
 }
 
 export interface PlatformRegistrationData {
