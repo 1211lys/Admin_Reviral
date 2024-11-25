@@ -117,8 +117,8 @@ export default function Page() {
       >
         다운로드
       </button>
-      <div className="grid grid-cols-6 text-center items-center text-xl border-b p-3 border-t border-r border-l border-red-500">
-        <div className="border-r border-red-500 ">
+      <div className="grid grid-cols-6 text-center items-center border-b p-3 border-t border-r border-l border-red-500">
+        <div className="border-r border-red-500 w-[200px] m-w-[200px]">
           <input
             type="checkbox"
             className="w-8 h-8 "

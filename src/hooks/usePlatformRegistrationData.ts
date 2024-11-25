@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export function usePlatformRegistrationData() {
   const [data, setData] = useState<PlatformRegistrationData>({
@@ -11,17 +11,13 @@ export function usePlatformRegistrationData() {
     startTime: "",
     endTime: "",
     optionType: "",
-    optionCount: 0,
-    option: {
-      optionName: "",
-      userCount: 0,
-    },
-    optionList: [
+    optionCount: 1,
+    options: [
       {
         key: 0,
         optionName: "",
-        optionList: ["", "", ""],
-        addAmount: 0,
+        optionList: [],
+        addAmount: [],
         userCount: 0,
       },
     ],
@@ -38,15 +34,45 @@ export function usePlatformRegistrationData() {
     }));
   };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
-    if (id in data) {
-      setData((prevData) => ({
-        ...prevData,
-        [id]: value,
-      }));
-    }
+    const numericKeys = ["productPrice", "reviewPoint"];
+
+    setData((prevData) => ({
+      ...prevData,
+      [id]: numericKeys.includes(id) ? Number(value) : value,
+    }));
+  };
+
+  const updateOptions = (action: "add" | "remove") => {
+    setData((prevData) => {
+      if (action === "add") {
+        const newOption: OptionListItem = {
+          key: prevData.options.length,
+          optionName: "",
+          optionList: [],
+          addAmount: [],
+          userCount: 0,
+        };
+
+        return {
+          ...prevData,
+          options: [...prevData.options, newOption],
+        };
+      }
+
+      if (action === "remove") {
+        if (prevData.options.length > 1) {
+          return {
+            ...prevData,
+            options: prevData.options.slice(0, -1),
+          };
+        }
+      }
+
+      return prevData;
+    });
   };
 
   const handleTimeCheckInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,13 +106,26 @@ export function usePlatformRegistrationData() {
     });
   };
 
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return {
     data,
     setData,
     updateButton,
     handleInputChange,
     handleTimeCheckInputChange,
+    updateOptions,
   };
+}
+
+export interface OptionListItem {
+  key: number;
+  optionName: string;
+  optionList: string[];
+  addAmount: string[];
+  userCount: number;
 }
 
 export interface PlatformRegistrationData {
@@ -100,17 +139,7 @@ export interface PlatformRegistrationData {
   endTime: string;
   optionType: string;
   optionCount: number;
-  option: {
-    optionName: string;
-    userCount: number;
-  };
-  optionList: Array<{
-    key: number;
-    optionName: string;
-    optionList: string[];
-    addAmount: number;
-    userCount: number;
-  }>;
+  options: OptionListItem[];
   requestedTerm: string;
 }
 

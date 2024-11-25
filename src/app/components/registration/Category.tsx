@@ -1,7 +1,7 @@
 "use client";
 
 import { PlatformRegistrationData } from "@/hooks/usePlatformRegistrationData";
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 
 const PLATFORM_DATA = [
   { key: 0, title: "네이버", value: "N" },
@@ -38,7 +38,6 @@ const TIME_DATA = [
 ];
 interface Props {
   data: PlatformRegistrationData;
-  setData: Dispatch<SetStateAction<PlatformRegistrationData>>;
   updateButton: (
     key: keyof PlatformRegistrationData,
     value: string | number
@@ -49,12 +48,10 @@ interface Props {
 
 export default function Category({
   data,
-  setData,
   updateButton,
   handleInputChange,
   handleTimeCheckInputChange,
 }: Props) {
-  console.log(setData);
   return (
     <div className="shadow-lg shadow-slate-500">
       {/* 카테고리 */}
@@ -63,14 +60,14 @@ export default function Category({
       </h2>
       <div className="flex flex-col justify-center ">
         <div className="flex gap-6 items-center border-b p-4">
-          <h3 className="font-bold mr-10 w-[100px]">
+          <h3 className="font-bold mr-10 min-w-[110px]">
             플랫폼<span className="ml-2 text-red-500">*</span>
           </h3>
 
           {PLATFORM_DATA.map((item) => (
             <button
               key={item.key}
-              className={`border w-[100px] h-[40px] rounded-lg ${
+              className={`border min-w-[110px] h-[40px] rounded-lg ${
                 data.platform === item.value && "bg-blue-500"
               } `}
               onClick={() => updateButton("platform", item.value)}
@@ -80,14 +77,14 @@ export default function Category({
           ))}
         </div>
         <div className="flex gap-6 items-center border-b p-4">
-          <h3 className="font-bold mr-10 w-[100px]">
+          <h3 className="font-bold mr-10 min-w-[110px]">
             상품가격<span className="ml-2 text-red-500">*</span>
           </h3>
 
           {PRODUCT_TYPE_DATA.map((item) => (
             <button
               key={item.key}
-              className={`border w-[100px] h-[40px] rounded-lg ${
+              className={`border min-w-[110px] h-[40px] rounded-lg ${
                 data.productType === item.value && "bg-blue-500"
               } `}
               onClick={() => updateButton("productType", item.value)}
@@ -97,7 +94,7 @@ export default function Category({
           ))}
         </div>
         <div className="flex gap-6 items-center border-b p-4">
-          <h3 className="font-bold mr-10 w-[100px]">
+          <h3 className="font-bold mr-10 min-w-[110px]">
             판매 기간<span className="ml-2 text-red-500">*</span>
           </h3>
           <input
@@ -119,7 +116,7 @@ export default function Category({
 
         {data.productType === "TP" && (
           <div className="flex items-center gap-6 border-b p-4">
-            <h3 className="font-bold mr-10 w-[100px]">
+            <h3 className="font-bold mr-10 min-w-[110px]">
               구매 시간<span className="ml-2 text-red-500">*</span>
             </h3>
             <div className="flex items-center">
