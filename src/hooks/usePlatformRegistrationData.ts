@@ -2,10 +2,12 @@ import { ChangeEvent, useEffect, useState } from "react";
 
 export function usePlatformRegistrationData() {
   const [data, setData] = useState<PlatformRegistrationData>({
+    platformName: "",
     platform: "",
     productType: "",
     productName: "",
     productLink: "",
+    productImgLink: "",
     productPrice: 0,
     reviewPoint: 0,
     startTime: "",
@@ -129,10 +131,12 @@ export interface OptionListItem {
 }
 
 export interface PlatformRegistrationData {
+  platformName: string;
   platform: string;
   productType: string;
   productName: string;
   productLink: string;
+  productImgLink: string;
   productPrice: number;
   reviewPoint: number;
   startTime: string;

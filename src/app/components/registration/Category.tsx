@@ -58,6 +58,18 @@ export default function Category({
       <h2 className="text-xl font-bold border-b p-4">
         카테고리<span className="ml-2 text-red-500">*</span>
       </h2>
+      <div className="flex gap-6 items-center border-b p-4">
+        <h3 className="font-bold mr-10 min-w-[110px]">
+          업체명<span className="ml-2 text-red-500">*</span>
+        </h3>
+        <input
+          type="text"
+          id="platformName"
+          placeholder="업체명을 입력해주세요"
+          onChange={handleInputChange}
+          className="w-full p-2"
+        />
+      </div>
       <div className="flex flex-col justify-center ">
         <div className="flex gap-6 items-center border-b p-4">
           <h3 className="font-bold mr-10 min-w-[110px]">
