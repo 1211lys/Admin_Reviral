@@ -2,44 +2,104 @@ import { ChangeEvent, useEffect, useState } from "react";
 
 export function usePlatformRegistrationData() {
   const [data, setData] = useState<PlatformRegistrationData>({
-    platformName: "",
+    companyName: "",
     platform: "",
-    productType: "",
-    productName: "",
-    productLink: "",
-    productImgLink: "",
-    productPrice: 0,
+    category: "",
+    productTitle: "",
+    campaignLink: "",
+    campaignImgUrl: "",
+    campaignPrice: 0,
     reviewPoint: 0,
+    startSaleDateTime: "",
+    endSaleDateTime: "",
     startTime: "",
     endTime: "",
-    optionType: "",
+    optionType: "SINGLE",
     optionCount: 1,
+
     options: [
       {
         key: 0,
-        optionName: "",
-        optionList: [],
-        addAmount: [],
-        userCount: 0,
+        optionTitle: "",
+        recruitPeople: "",
+        subOption: [
+          { key: 0, subOptionTitle: "", addPrice: "", recruitPeople: "" },
+        ],
       },
     ],
-    requestedTerm: "",
+    sellerRequest: "",
   });
 
   const updateButton = (
     key: keyof PlatformRegistrationData,
     value: string | number
   ) => {
-    setData((prevData) => ({
-      ...prevData,
-      [key]: value,
-    }));
+    if (key === "optionType") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setData((prevData: any) => {
+        if (value === "SINGLE") {
+          return {
+            ...prevData,
+            optionType: value,
+            optionCount: 1,
+            options: [
+              {
+                key: 0,
+                optionTitle: "",
+                recruitPeople: "",
+                subOption: [
+                  {
+                    key: 0,
+                    subOptionTitle: "",
+                    addPrice: "",
+                    recruitPeople: "",
+                  },
+                ],
+              },
+            ],
+          };
+        }
+
+        if (value === "MULTI") {
+          return {
+            ...prevData,
+            optionType: value,
+            optionCount: 1,
+            options: [
+              {
+                key: 0,
+                optionTitle: "",
+                recruitPeople: "",
+                subOption: [
+                  {
+                    key: 0,
+                    subOptionTitle: "",
+                    addPrice: "",
+                    recruitPeople: "",
+                  },
+                ],
+              },
+            ],
+          };
+        }
+
+        return {
+          ...prevData,
+          [key]: value,
+        };
+      });
+    } else {
+      setData((prevData) => ({
+        ...prevData,
+        [key]: value,
+      }));
+    }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
-    const numericKeys = ["productPrice", "reviewPoint"];
+    const numericKeys = ["campaignPrice", "reviewPoint"];
 
     setData((prevData) => ({
       ...prevData,
@@ -47,54 +107,24 @@ export function usePlatformRegistrationData() {
     }));
   };
 
-  const updateOptions = (action: "add" | "remove") => {
-    setData((prevData) => {
-      if (action === "add") {
-        const newOption: OptionListItem = {
-          key: prevData.options.length,
-          optionName: "",
-          optionList: [],
-          addAmount: [],
-          userCount: 0,
-        };
-
-        return {
-          ...prevData,
-          options: [...prevData.options, newOption],
-        };
-      }
-
-      if (action === "remove") {
-        if (prevData.options.length > 1) {
-          return {
-            ...prevData,
-            options: prevData.options.slice(0, -1),
-          };
-        }
-      }
-
-      return prevData;
-    });
-  };
-
   const handleTimeCheckInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
     setData((prevData) => {
-      let updatedStartTime = prevData.startTime;
-      let updatedEndTime = prevData.endTime;
+      let updatedStartSaleDateTime = prevData.startSaleDateTime;
+      let updatedEndSaleDateTime = prevData.endSaleDateTime;
 
       if (id === "startHour" || id === "startMin") {
-        const [hour, min] = updatedStartTime.split(":");
-        updatedStartTime =
+        const [hour, min] = updatedStartSaleDateTime.split(":");
+        updatedStartSaleDateTime =
           id === "startHour"
             ? `${value.padStart(2, "0")}:${min}`
             : `${hour}:${value.padStart(2, "0")}`;
       }
 
       if (id === "endHour" || id === "endMin") {
-        const [hour, min] = updatedEndTime.split(":");
-        updatedEndTime =
+        const [hour, min] = updatedEndSaleDateTime.split(":");
+        updatedEndSaleDateTime =
           id === "endHour"
             ? `${value.padStart(2, "0")}:${min}`
             : `${hour}:${value.padStart(2, "0")}`;
@@ -102,8 +132,46 @@ export function usePlatformRegistrationData() {
 
       return {
         ...prevData,
-        startTime: updatedStartTime,
-        endTime: updatedEndTime,
+        startSaleDateTime: updatedStartSaleDateTime,
+        endSaleDateTime: updatedEndSaleDateTime,
+      };
+    });
+  };
+
+  const addOption = () => {
+    setData((prevData) => ({
+      ...prevData,
+      options: [
+        ...prevData.options,
+        {
+          key: prevData.options.length,
+          optionTitle: "",
+          recruitPeople: "",
+          subOption:
+            prevData.optionType === "MULTI"
+              ? [
+                  {
+                    key: 0,
+                    subOptionTitle: "",
+                    addPrice: "",
+                    recruitPeople: "",
+                  },
+                ]
+              : [],
+        },
+      ],
+    }));
+  };
+
+  const removeOption = (key: number) => {
+    setData((prevData) => {
+      if (prevData.options.length <= 1) {
+        return prevData;
+      }
+
+      return {
+        ...prevData,
+        options: prevData.options.filter((option) => option.key !== key),
       };
     });
   };
@@ -118,40 +186,48 @@ export function usePlatformRegistrationData() {
     updateButton,
     handleInputChange,
     handleTimeCheckInputChange,
-    updateOptions,
+    addOption,
+    removeOption,
   };
 }
 
+export interface subOptions {
+  subOptionTitle: string;
+  addPrice: number | string;
+  recruitPeople: number | string;
+  key: number;
+}
 export interface OptionListItem {
   key: number;
-  optionName: string;
-  optionList: string[];
-  addAmount: string[];
-  userCount: number;
+  optionTitle: string;
+  subOption: subOptions[];
+  recruitPeople: number | string;
 }
 
 export interface PlatformRegistrationData {
-  platformName: string;
+  companyName: string;
   platform: string;
-  productType: string;
-  productName: string;
-  productLink: string;
-  productImgLink: string;
-  productPrice: number;
+  category: string;
+  productTitle: string;
+  campaignLink: string;
+  campaignImgUrl: string;
+  campaignPrice: number;
   reviewPoint: number;
+  startSaleDateTime: string;
+  endSaleDateTime: string;
   startTime: string;
   endTime: string;
   optionType: string;
   optionCount: number;
   options: OptionListItem[];
-  requestedTerm: string;
+  sellerRequest: string;
 }
 
 // const DATA = {
 //   //플랫폼
 //   platform: "N, C, E",
 //   //상품타입
-//   productType: "SP, TP",
+//   category: "SP, TP",
 //   // SP = 당일 구매
 //   // TP = 시간 구매
 
@@ -163,16 +239,16 @@ export interface PlatformRegistrationData {
 //   //판매기간
 //   startDay: "YYYY.MM.DD",
 //   endDay: "YYYY.MM.DD",
-//   startTime : '00:00'
-//   endTime : '00:00'
+//   startSaleDateTime : '00:00'
+//   endSaleDateTime : '00:00'
 
 //   //상품명
-//   productName: "",
+//   productTitle: "",
 //   //상품링크주소
-//   productLink: "",
+//   campaignLink: "",
 
 //   //상품가격
-//   productPrice: 0,
+//   campaignPrice: 0,
 //   //라뷰어 지급 포인트
 //   reviewPoint: 0,
 
@@ -186,8 +262,8 @@ export interface PlatformRegistrationData {
 
 //   //ST일때
 //   option: {
-//     optionName: "",
-//     userCount: 0,
+//     optionTitle: "",
+//     recruitPeople: 0,
 //   },
 
 //   //CT 일때
@@ -195,16 +271,16 @@ export interface PlatformRegistrationData {
 //     {
 //       key: 0,
 //       //옵션명
-//       optionName: "",
+//       optionTitle: "",
 //       //하위 옵션 값
 //       optionList: ["", "", ""],
 //       //추가금액
 //       addAmount: 0,
 //       //모집인원
-//       userCount: 0,
+//       recruitPeople: 0,
 //     },
 //   ],
 
 //   //리뷰 요청사항
-//   requestedTerm: "",
+//   sellerRequest: "",
 // };

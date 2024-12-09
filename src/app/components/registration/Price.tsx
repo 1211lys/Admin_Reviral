@@ -21,7 +21,7 @@ export default function Price({ handleInputChange }: Props) {
           <div className="flex items-center">
             <input
               type="number"
-              id="productPrice"
+              id="campaignPrice"
               placeholder="숫자만 입력"
               onChange={handleInputChange}
               className="p-2"

@@ -6,14 +6,17 @@ import { usePlatformRegistrationData } from "@/hooks/usePlatformRegistrationData
 import ProductName from "./ProductName";
 import Price from "./Price";
 import ProductOption from "./ProductOption";
+import SaveButton from "./SaveButton";
 
 export default function Registration() {
   const {
     data,
+    setData,
     updateButton,
     handleInputChange,
     handleTimeCheckInputChange,
-    updateOptions,
+    addOption,
+    removeOption,
   } = usePlatformRegistrationData();
   return (
     <>
@@ -26,13 +29,16 @@ export default function Registration() {
           handleTimeCheckInputChange={handleTimeCheckInputChange}
         />
 
-        <ProductName handleInputChange={handleInputChange} />
+        <ProductName handleInputChange={handleInputChange} setData={setData} />
         <Price handleInputChange={handleInputChange} />
         <ProductOption
           data={data}
+          setData={setData}
           updateButton={updateButton}
-          updateOptions={updateOptions}
+          addOption={addOption}
+          removeOption={removeOption}
         />
+        <SaveButton data={data} />
       </div>
     </>
   );

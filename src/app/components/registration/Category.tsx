@@ -4,14 +4,14 @@ import { PlatformRegistrationData } from "@/hooks/usePlatformRegistrationData";
 import React from "react";
 
 const PLATFORM_DATA = [
-  { key: 0, title: "네이버", value: "N" },
-  { key: 1, title: "쿠팡", value: "C" },
-  { key: 2, title: "기타", value: "E" },
+  { key: 0, title: "네이버", value: "NAVER" },
+  { key: 1, title: "쿠팡", value: "COUPANG" },
+  { key: 2, title: "기타", value: "ETC" },
 ];
 
 const PRODUCT_TYPE_DATA = [
-  { key: 0, title: "당일 구매", value: "SP" },
-  { key: 1, title: "시간 구매", value: "TP" },
+  { key: 0, title: "당일 구매", value: "DAILY" },
+  { key: 1, title: "시간 구매", value: "TIME" },
 ];
 
 const TIME_DATA = [
@@ -64,7 +64,7 @@ export default function Category({
         </h3>
         <input
           type="text"
-          id="platformName"
+          id="companyName"
           placeholder="업체명을 입력해주세요"
           onChange={handleInputChange}
           className="w-full p-2"
@@ -97,9 +97,9 @@ export default function Category({
             <button
               key={item.key}
               className={`border min-w-[110px] h-[40px] rounded-lg ${
-                data.productType === item.value && "bg-blue-500"
+                data.category === item.value && "bg-blue-500"
               } `}
-              onClick={() => updateButton("productType", item.value)}
+              onClick={() => updateButton("category", item.value)}
             >
               {item.title}
             </button>
@@ -114,7 +114,7 @@ export default function Category({
             type="text"
             placeholder="2024.11.11"
             onChange={handleInputChange}
-            id="startDay"
+            id="startSaleDateTime"
           />{" "}
           ~{" "}
           <input
@@ -122,11 +122,11 @@ export default function Category({
             type="text"
             placeholder="2024.12.12"
             onChange={handleInputChange}
-            id="endDay"
+            id="endSaleDateTime"
           />
         </div>
 
-        {data.productType === "TP" && (
+        {data.category === "TIME" && (
           <div className="flex items-center gap-6 border-b p-4">
             <h3 className="font-bold mr-10 min-w-[110px]">
               구매 시간<span className="ml-2 text-red-500">*</span>
