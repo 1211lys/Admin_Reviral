@@ -45,8 +45,8 @@ export default function SaveButton({ data }: Props) {
       dataToSend.endSaleDateTime = formatDate(dataToSend.endSaleDateTime);
     }
 
-    if (dataToSend.optionType === "SINGLE") {
-      dataToSend.options = dataToSend.options.map((option) => ({
+    if (dataToSend?.optionType === "SINGLE") {
+      dataToSend.options = dataToSend?.options.map((option) => ({
         ...option,
         subOption: null,
       }));

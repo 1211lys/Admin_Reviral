@@ -1,7 +1,7 @@
 "use client";
 
 import { PlatformRegistrationData } from "@/hooks/usePlatformRegistrationData";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 
 const OPTION_TYPE_DATA = [
@@ -27,6 +27,13 @@ export default function ProductOption({
   addOption,
   removeOption,
 }: Props) {
+  const [isClient, setIsClient] = useState(false);
+
+  // 클라이언트에서만 동작하도록 하는 useEffect
+  useEffect(() => {
+    setIsClient(true); // 클라이언트에서만 실행
+  }, []);
+
   const addSubOption = (optionKey: number) => {
     setData((prevData) => {
       const updatedOptions = prevData.options.map((option) =>
@@ -36,7 +43,7 @@ export default function ProductOption({
               subOption: [
                 ...option.subOption,
                 {
-                  key: Date.now(),
+                  key: Date.now(), // 클라이언트에서만 동작하도록 수정 필요
                   subOptionTitle: "",
                   addPrice: "",
                   recruitPeople: "",
@@ -70,6 +77,10 @@ export default function ProductOption({
       return { ...prevData, options: updatedOptions };
     });
   };
+
+  if (!isClient) {
+    return null; // 클라이언트에서만 렌더링하도록 처리
+  }
 
   return (
     <div className="shadow-lg shadow-slate-500">
@@ -200,7 +211,7 @@ export default function ProductOption({
                           <div className="flex gap-4">
                             <div className="flex items-center">
                               <input
-                                type="text"
+                                type="number"
                                 placeholder="추가금액"
                                 className="p-4 h-[40px]"
                                 value={sub.addPrice}

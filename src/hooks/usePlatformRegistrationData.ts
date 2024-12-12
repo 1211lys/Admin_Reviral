@@ -217,7 +217,7 @@ export interface PlatformRegistrationData {
   endSaleDateTime: string;
   startTime: string;
   endTime: string;
-  optionType: string;
+  optionType?: string;
   optionCount: number;
   options: OptionListItem[];
   sellerRequest: string;

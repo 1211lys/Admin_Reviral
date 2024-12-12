@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
-import TiptapEditor from "../common/Tiptap";
+const TiptapEditor = dynamic(() => import("../common/Tiptap"), { ssr: false });
 import { PlatformRegistrationData } from "@/hooks/usePlatformRegistrationData";
+import dynamic from "next/dynamic";
 
 interface Props {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
